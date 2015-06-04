@@ -1,6 +1,58 @@
 <div ng-if="isOwner()">
-  <h2 ng-click="toggleTool()">Owner panel
+<!-- <button class="backToLeagues textLink" ng-click="go('/leagues/list')"><i class="fa fa-arrow-left"></i> Back to Leagues</button> -->
+<div  class="leagueInfo">
+  <h2 class="leagueName">
+    {{league.name}}
   </h2>
+  <div class="leagueShow">
+    {{league.show}}
+  </div>
+  <div class="leagueOwner">
+    owner: {{league.Owner.username}}
+  </div>
+  <div class="leagueLimit">
+    roster limit: {{league.roster_limit}}
+  </div>
+</div>
+<div ng-if="!isOwner()">
+  <div>
+    <h3 ng-click="toggleCharacters()">Characters</h3>
+    <div ng-show="showCharacters">
+      <div ng-repeat="character in characters">
+        {{character.name}}
+      </div>
+    </div>
+  </div>
+  <div>
+    <h3 ng-click="toggleEvents()">Events</h3>
+    <div ng-show="showEvents"> 
+      <div class="characAndScore" ng-repeat="event in events">
+        <span class="left">{{event.description}}</span>   <span class="right"> {{event.score_up}}</span>
+      </div>
+      <br>
+    </div>
+  </div>
+</div>
+<div class="usersDivide">
+  users
+</div>
+<div ng-repeat="user in users" class="listView">
+  <span class="left" ng-click="showRoster($index, user.id)">{{user.username}}</span>
+  <span class="points right"> {{user.user_leagues[0].current_score}} pts</span>
+  <div class="roster" ng-show="$index == indexSelect">
+    roster:
+    <div>
+      <div ng-show="user.roster.length == 0">
+        No roster drafted by this user
+      </div>
+      <div class="characInRosters" ng-repeat='roster in user.roster'>
+        {{roster.league_character.name}}  {{roster.current_score}}
+      </div>
+    </div>
+  </div>
+</div>
+
+  <button class="options" ng-click="toggleTool()">Owner panel</button>
   <div ng-show="showTool">
   <form ng-submit="triggerEvent()">
     <h3> Characters </h3> 
@@ -23,56 +75,5 @@
   <br><br>
   </div>
 </div>
-{{rosterLength}}
-{{league}}
-<button ng-show="rosterLength < league.roster_limit" ui-sref="leagues.draft({id:league.id})">DRAFT</button>
-<div>
-  Name: {{league.name}}
-  {{test}}
-</div>
-<div>
-  Show: {{league.show}}
-</div>
-<div>
-  Owner: {{league.Owner.username}}
-</div>
-<div>
-  Roster limit: {{league.roster_limit}}
-</div>
-<div ng-if="!isOwner()">
-  <div>
-    <h3 ng-click="toggleCharacters()">Characters</h3>
-    <div ng-show="showCharacters">
-      <div ng-repeat="character in characters">
-        {{character.name}}
-      </div>
-    </div>
-  </div>
-  <div>
-    <h3 ng-click="toggleEvents()">Events</h3>
-    <div ng-show="showEvents"> 
-      <div ng-repeat="event in events">
-        {{event.description}}    {{event.score_up}}
-      </div>
-      <br>
-    </div>
-  </div>
-</div>
-<div>
-  Users
-</div>
-<div ng-repeat="user in users">
-  <span ng-click="showRoster($index, user.id)">{{user.username}}</span>
-  {{user.user_leagues[0].current_score}}
-  <div ng-show="$index == indexSelect">
-    Roster:
-    <div>
-      <div ng-show="user.roster.length == 0">
-        No roster drafted by this user
-      </div>
-      <div ng-repeat='roster in user.roster'>
-        {{roster.league_character.name}}  {{roster.current_score}}
-      </div>
-    </div>
-  </div>
-</div>
+<button class="action" ng-show="rosterLength < league.roster_limit" ui-sref="leagues.draft({id:league.id})">DRAFT</button>
+
