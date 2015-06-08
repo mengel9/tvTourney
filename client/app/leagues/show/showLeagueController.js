@@ -10,6 +10,8 @@ angular.module('app.leagues.show', [])
   $scope.showTool = false;
   $scope.showUserRoster = true;
   $scope.charEventTrigger = {};
+  $scope.all = true;
+  $scope.closed = true;
 
   /* connect to websocket server - socket.io is magical and if the client is being served by the server, then you dont
   need to specify an address to connect to */
@@ -93,12 +95,17 @@ angular.module('app.leagues.show', [])
 
   $scope.showRoster = function(index, userId) {
     //if that roster is already being displayed, close it
+
     if ($scope.indexSelect === index) {
       $scope.indexSelect = null;
+      $scope.closed = true;
     }
     else {
       //display roster of the user that was clicked
       $scope.indexSelect = index;
+      $scope.closed = false;
+      $scope.open = true;
+
     }
   }
 
